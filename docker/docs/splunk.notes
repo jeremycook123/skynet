@@ -12,3 +12,7 @@ index=main host=docker1
 index=_internal source=*metrics.log* tcpin_connections | stats count by sourceIp
 index=_internal source=*metrics.log* tcpin_connections
 index=main host=* sourcetype=mysourcetype
+
+===============================
+
+docker run -d -p 8000:8000 -p 9997:9997 -e 'SPLUNK_START_ARGS=--accept-license' -e 'SPLUNK_PASSWORD=2rnw^%mnsd' splunk/splunk:latest

@@ -1,16 +1,39 @@
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'war'
+
+    group = 'org.cloudacademy.example.webapp'
+    version = '1.0'
+    status = 'integration'
+}
+
+/*
 plugins {
     id 'java'
     id 'war'
     id 'org.gretty' version '2.2.0' 
 }
+ */
+
+// =======================================
 
 compileJava {
     options.compilerArgs += '-proc:none'
 }
 
+// =======================================
+
+buildscript {
+  repositories {
+    jcenter()
+  }
+}
+
 repositories {
     jcenter()
 }
+
+// =======================================
 
 dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.10.0'

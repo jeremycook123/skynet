@@ -1,0 +1,25 @@
+Manage Plugins
+    Installed
+        Artifactory Plugin
+        SonarQube Scanner **
+        Blue Ocean **
+
+Manage Jenkins
+    Configure System
+        Artifactory
+            Update URL 
+                http://34.215.139.22/artifactory
+                    Test Connection
+
+                    Consider EC2 Security Groups
+        
+        Jenkins Location
+            http://34.215.139.22:8080/
+
+            Consider EIP on instance            
+
+Manage Jenkins
+    Global Tool Configuration
+        Gradle
+            gradle4-10-2
+
