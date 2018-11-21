@@ -1,0 +1,83 @@
+version: "2"
+services:
+  jenkins:
+    container_name: jenkins
+    image: jenkins-docker
+    networks:
+      - jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - /docker/volumes/jenkins_home:/var/jenkins_home
+    environment:
+      - DOCKER_HOST=tcp://socat:2375
+    depends_on:
+      - socat
+  socat:
+    container_name: socat
+    image: alpine/socat
+    networks:
+      - jenkins
+    command: tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    expose:
+      - "2375"
+  postgres1:
+    container_name: postgres1
+    image: postgres:9.6
+    networks:
+      - jenkins
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonarpasswd
+    volumes:
+      - /docker/volumes/postgres-data:/var/lib/postgresql/data
+  sonarqube:
+    container_name: sonarqube
+    image: sonarqube:7.1
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+    networks:
+      - jenkins
+    environment:
+      SONARQUBE_JDBC_USERNAME: sonar
+      SONARQUBE_JDBC_PASSWORD: sonarpasswd
+      SONARQUBE_JDBC_URL: "jdbc:postgresql://postgres1:5432/sonar"
+    depends_on:
+      - postgres1
+
+  postgres2:
+    container_name: postgres2
+    image: postgres:9.6
+    networks:
+      - jenkins
+    environment:
+      - POSTGRES_DB=artifactory
+      # The following must match the DB_USER and DB_PASSWORD values passed to Artifactory
+      - POSTGRES_USER=artifactory
+      - POSTGRES_PASSWORD=password
+    restart: always
+
+  artifactory:
+    image: docker.bintray.io/jfrog/artifactory-pro:6.5.3
+    container_name: artifactory
+    networks:
+      - jenkins
+    ports:
+      - 80:8081
+    environment:
+      - DB_TYPE=postgresql
+      - DB_HOST=postgres2
+      # The following must match the POSTGRES_USER and POSTGRES_PASSWORD values passed to PostgreSQL
+      - DB_USER=artifactory
+      - DB_PASSWORD=password
+      # Add extra Java options by uncommenting the following line
+      #- EXTRA_JAVA_OPTIONS=-Xmx4g
+    restart: always
+    depends_on:
+      - postgres2
+
+networks: jenkins:
