@@ -7,14 +7,6 @@ allprojects {
     status = 'integration'
 }
 
-/*
-plugins {
-    id 'java'
-    id 'war'
-    id 'org.gretty' version '2.2.0' 
-}
- */
-
 // =======================================
 
 compileJava {
@@ -32,8 +24,6 @@ buildscript {
 repositories {
     jcenter()
 }
-
-// =======================================
 
 dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.10.0'

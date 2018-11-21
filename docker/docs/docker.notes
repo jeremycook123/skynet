@@ -3,8 +3,9 @@ docker build -t tomcat-webapp .
 docker run --rm -p 8000:8080 tomcat-webapp
 docker ps
 docker exec -it f33 bash
+http://localhost:8000/webapp
 
-docker ps -a | grep /usr/bin/supervisord | awk '{print $1}' | xargs docker rmi
+docker ps -a | grep /usr/bin/supervisord | awk '{print $1}' | xargs docker rm
 docker ps -a | grep "hours ago" | awk '{print $1}' | xargs docker rm
 
 ==========================

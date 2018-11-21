@@ -3,6 +3,7 @@
 /opt/splunkforwarder/bin/splunk restart
 
 tail -f /opt/splunkforwarder/var/log/splunk/splunkd.log
+tail -f /var/log/tomcat.log
 
 ===============================
 

@@ -18,7 +18,8 @@ RUN mkdir -p /var/log/webapp
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-COPY webapp.war /usr/local/tomcat/webapps/
+#COPY webapp.war /usr/local/tomcat/webapps/
+COPY webapp-1.0.war /usr/local/tomcat/webapps/
 
 #CMD ["catalina.sh", "run"]
 ENTRYPOINT ["/usr/bin/supervisord"]
