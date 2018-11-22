@@ -16,8 +16,19 @@ node {
         rtGradle.resolver repo: 'jcenter', server: server
     }
 
-    stage ('Exec Gradle') {
-        buildInfo = rtGradle.run rootDir: "webapp/", buildFile: 'build.gradle', tasks: 'clean artifactoryPublish'
+    stage ('Gradle Clean/Build/Test') {
+        buildInfo = rtGradle.run rootDir: "webapp/", buildFile: 'build.gradle', tasks: 'clean build'
+    }
+
+    stage('sonar-scanner') {
+      def sonarqubeScannerHome = tool name: 'sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+      withCredentials([string(credentialsId: 'sonar', variable: 'sonarLogin')]) {
+        sh "${sonarqubeScannerHome}/bin/sonar-scanner -e -Dsonar.host.url=http://34.215.139.22:9000 -Dsonar.login=${sonarLogin} -Dsonar.projectName=webapp -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=GS -Dsonar.sources=webapp/src/main/ -Dsonar.tests=webapp/src/test/ -Dsonar.java.binaries=webapp/build/**/* -Dsonar.language=java"
+      }
+    }
+
+    stage ('Gradle Publish') {
+        buildInfo = rtGradle.run rootDir: "webapp/", buildFile: 'build.gradle', tasks: 'artifactoryPublish'
     }
 
     stage ('Publish build info') {
