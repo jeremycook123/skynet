@@ -1,0 +1,24 @@
+node {
+    def SONAR_IP = "18.236.9.230"
+    
+    def myGradleContainer = docker.image('gradle:jdk8-alpine')
+    myGradleContainer.pull()
+
+    stage('prep') {
+        git url: 'https://github.com/jeremycook123/skynet.git'
+    }
+
+    stage('build') {
+      myGradleContainer.inside("-u root -v ${env.HOME}/.gradle:/home/gradle/.gradle") {
+        sh 'cd webapp && /opt/gradle/bin/gradle build'
+      }
+    }
+
+    stage('sonar-scanner') {
+      def sonarqubeScannerHome = tool name: 'sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+      withCredentials([string(credentialsId: 'sonar', variable: 'sonarLogin')]) {
+        sh "${sonarqubeScannerHome}/bin/sonar-scanner -e -Dsonar.host.url=http://${SONAR_IP}:9000 -Dsonar.login=${sonarLogin} -Dsonar.projectName=webapp -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=GS -Dsonar.sources=webapp/src/main/ -Dsonar.tests=webapp/src/test/ -Dsonar.java.binaries=webapp/build/**/* -Dsonar.language=java"
+      }
+    }
+
+}
