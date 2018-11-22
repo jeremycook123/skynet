@@ -1,0 +1,53 @@
+version: "2"
+services:
+  jenkins:
+    container_name: jenkins
+    image: jenkins-ca:latest
+    networks:
+      - jenkins
+    ports:
+      - "8080:8080"
+    environment:
+      - DOCKER_HOST=tcp://socat:2375
+    depends_on:
+      - socat
+  socat:
+    container_name: socat
+    image: socat-ca:latest
+    networks:
+      - jenkins
+    command: tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    expose:
+      - "2375"
+  postgres:
+    container_name: postgres
+    image: postgres:9.6
+    networks:
+      - jenkins
+    environment:
+      - POSTGRES_DB=artifactory
+      # The following must match the DB_USER and DB_PASSWORD values passed to Artifactory
+      - POSTGRES_USER=artifactory
+      - POSTGRES_PASSWORD=password
+  artifactory:
+    image: artifactory-ca:latest
+    container_name: artifactory
+    networks:
+      - jenkins
+    ports:
+      - 80:8081
+    environment:
+      - DB_TYPE=postgresql
+      - DB_HOST=postgres
+      # The following must match the POSTGRES_USER and POSTGRES_PASSWORD values passed to PostgreSQL
+      - DB_USER=artifactory
+      - DB_PASSWORD=password
+      # Add extra Java options by uncommenting the following line
+      #- EXTRA_JAVA_OPTIONS=-Xmx4g
+    depends_on:
+      - postgres
+
+networks:
+  jenkins:
