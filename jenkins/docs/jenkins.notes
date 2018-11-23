@@ -1,3 +1,7 @@
+/var/jenkins_home/secrets/initialAdminPassword
+
+==================================
+
 Manage Plugins
     Installed
         Artifactory Plugin
