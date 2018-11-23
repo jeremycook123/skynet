@@ -32,6 +32,11 @@ services:
     environment:
       POSTGRES_USER: sonar
       POSTGRES_PASSWORD: sonarpasswd
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 32000
+        hard: 40000
   sonarqube:
     container_name: sonarqube
     #image: sonarqube-ca:latest
