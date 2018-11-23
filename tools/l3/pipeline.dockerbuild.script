@@ -1,0 +1,30 @@
+node {
+    def SPLUNK_IP='52.26.174.2'
+    def GRADLE_HOME = tool name: 'gradle-4.10.2', type: 'hudson.plugins.gradle.GradleInstallation'
+    sh "${GRADLE_HOME}/bin/gradle tasks"
+    
+    stage('prep') {
+        git url: 'https://github.com/jeremycook123/skynet.git'
+    }
+
+    stage('build') {
+        sh "cd webapp && ${GRADLE_HOME}/bin/gradle build"
+        sh "ls -la webapp/build/libs/*.war"
+        sh "echo ====================="
+        sh "cp webapp/build/libs/*.war docker/"
+        sh "pwd"
+        sh "ls -la"
+        sh "ls -la ./docker"
+    }
+
+    stage('Update Splunk IP') {
+        sh "cd docker && sed -i 's/TOKEN_SPLUNK_IP/${SPLUNK_IP}/g' outputs.conf && cat outputs.conf"    
+    }
+    
+    stage ('Docker Build') {
+        withDockerRegistry([credentialsId: 'dockerhub', url: ""]) {
+            def image = docker.build("jeremycookdev/webapp:latest", "./docker")
+            image.push()
+        }   
+    }
+}
