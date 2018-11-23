@@ -1,5 +1,5 @@
 node {
-    def SPLUNK_IP='52.26.174.2'
+    def SPLUNK_IP='X.X.X.X'
     def GRADLE_HOME = tool name: 'gradle-4.10.2', type: 'hudson.plugins.gradle.GradleInstallation'
     sh "${GRADLE_HOME}/bin/gradle tasks"
     
