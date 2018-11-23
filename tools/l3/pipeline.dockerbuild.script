@@ -20,11 +20,17 @@ node {
     stage('Update Splunk IP') {
         sh "cd docker && sed -i 's/TOKEN_SPLUNK_IP/${SPLUNK_IP}/g' outputs.conf && cat outputs.conf"    
     }
-    
+
     stage ('Docker Build') {
+        def image = docker.build("jeremycookdev/webapp:${BUILD_NUMBER}", "./docker")
+    }
+
+    /*
+    stage ('Docker Build and Push') {
         withDockerRegistry([credentialsId: 'dockerhub', url: ""]) {
             def image = docker.build("jeremycookdev/webapp:latest", "./docker")
             image.push()
         }   
     }
+    */
 }
