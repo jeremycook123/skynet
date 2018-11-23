@@ -11,3 +11,7 @@ docker ps -a | grep "hours ago" | awk '{print $1}' | xargs docker rm
 ==========================
 
 docker ps -a | wc -l
+
+==========================
+
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sonarqube
