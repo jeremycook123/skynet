@@ -1,2 +1,5 @@
 docker-compose -f docker-compose-sonarqube.yml config
 docker-compose -f docker-compose-sonarqube.yml up
+
+docker-compose config
+docker-compose up -d && docker-compose logs -f
