@@ -2,7 +2,8 @@ version: "2"
 services:
   jenkins:
     container_name: jenkins
-    image: jenkins-ca:latest
+    #image: jenkins-ca:latest
+    image: jenkins/jenkins:lts
     networks:
       - jenkins
     ports:
@@ -13,7 +14,8 @@ services:
       - socat
   socat:
     container_name: socat
-    image: socat-ca:latest
+    #image: socat-ca:latest
+    image: alpine/socat:latest
     networks:
       - jenkins
     command: tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock
@@ -22,7 +24,8 @@ services:
     expose:
       - "2375"
   splunk:
-    image: splunk-ca:latest
+    #image: splunk-ca:latest
+    image: splunk/splunk
     container_name: splunk
     networks:
       - jenkins
