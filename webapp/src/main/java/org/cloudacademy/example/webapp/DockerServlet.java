@@ -37,7 +37,6 @@ public class DockerServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        logger.debug("DockerServlet invoked!!");
         // get the docker client
         DockerClient client = DockerClientBuilder.getInstance(config).build();
         // prepare command to retrieve the list of (running) containers
