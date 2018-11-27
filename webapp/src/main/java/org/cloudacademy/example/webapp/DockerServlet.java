@@ -24,7 +24,7 @@ import java.util.Iterator;
 
 @WebServlet(name = "DockerServlet", urlPatterns = { "/app", "/action1", "/action2", "/action3" }, loadOnStartup = 1)
 public class DockerServlet extends HttpServlet {
-    final static String CONTAINER_NETWORK_NAME = "ec2-user_jenkins";
+    final static String CONTAINER_NETWORK_NAME = System.getenv("CONTAINER_NETWORK");
 
     // final static Log logger = LogFactory.getLog(DockerServlet.class);
 
@@ -32,8 +32,7 @@ public class DockerServlet extends HttpServlet {
     // final static Logger logger = LogManager.getLogger("CONSOLE_JSON_APPENDER");
     // logger.debug("Debug message");
 
-    DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-            .withDockerHost("tcp://socat:2375").build();
+    DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().withDockerHost("tcp://socat:2375").build();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,16 +48,22 @@ public class DockerServlet extends HttpServlet {
         String containerId = null;
         String containerIp = null;
 
-        Iterator<Container> containerIterator = containerList.iterator();
-        while (containerIterator.hasNext()) {
-            Container container = containerIterator.next();
-
-            containerId = container.getId();
-            containerIp = container.getNetworkSettings().getNetworks().get(CONTAINER_NETWORK_NAME).getIpAddress();
-
-            request.setAttribute("containerid", containerId);
-            request.setAttribute("containerip", containerIp);
+        try{
+            Iterator<Container> containerIterator = containerList.iterator();
+            while (containerIterator.hasNext()) {
+                Container container = containerIterator.next();
+    
+                containerId = container.getId().substring(0, 10);
+                containerIp = container.getNetworkSettings().getNetworks().get(CONTAINER_NETWORK_NAME).getIpAddress();    
+            }    
         }
+        catch (Exception e){
+            containerId = "unknown";
+            containerIp = "unknown";
+        }
+
+        request.setAttribute("containerid", containerId);
+        request.setAttribute("containerip", containerIp);
 
         String path = request.getServletPath() != null ? request.getServletPath() : "";
         switch (path) {

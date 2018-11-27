@@ -25,19 +25,19 @@
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
         <div class="container">
-          <h1 class="display-3">WebApp</h1>
-          <p>${containerid}</p>
-          <p>${containerip}</p>
+          <h1 class="display-3">WebApp v1</h1>
           <p>
-            This is a template for a simple marketing or informational website.
-            It includes a large callout called a jumbotron and three supporting
-            pieces of content. Use it as a starting point to create something
-            more unique.
+            <span class="badge badge-success">${containerid}</span><br>
+            <span class="badge badge-success">${containerip}</span>
           </p>
           <p>
-            <a class="btn btn-primary btn-lg" href="#" role="button"
-              >Learn more &raquo;</a
-            >
+            Cloud Academy is an enterprise-ready training platform that accelerates teams and digital transformation.
+            Leverage our multi-cloud training library to move faster.
+            Skills are built when knowledge, experience, and context intersect. Our vendor neutral training catalog is developed and maintained by experts on AWS, Azure, GCP, CI/CD, containers, security, IoT, data science, machine learning, big data, and beyond.
+
+          </p>
+          <p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a>
           </p>
         </div>
       </div>
@@ -54,11 +54,7 @@
               magna mollis euismod. Donec sed odio dui.
             </p>
             <p>
-              <button
-                id="action1"
-                type="button"
-                class="btn btn-outline-success"
-              >
+              <button id="action1" type="button" class="btn btn-outline-success">
                 Action 1
               </button>
             </p>
@@ -72,11 +68,7 @@
               magna mollis euismod. Donec sed odio dui.
             </p>
             <p>
-              <button
-                id="action2"
-                type="button"
-                class="btn btn-outline-success"
-              >
+              <button id="action2" type="button" class="btn btn-outline-success">
                 Action 2
               </button>
             </p>
@@ -90,11 +82,7 @@
               condimentum nibh, ut fermentum massa justo sit amet risus.
             </p>
             <p>
-              <button
-                id="action3"
-                type="button"
-                class="btn btn-outline-success"
-              >
+              <button id="action3" type="button" class="btn btn-outline-success">
                 Action 3
               </button>
             </p>

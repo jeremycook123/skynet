@@ -4,7 +4,9 @@ node {
     def GRADLE_HOME = tool name: 'gradle-4.10.2', type: 'hudson.plugins.gradle.GradleInstallation'
 
     stage('prep') {
-        git url: 'https://github.com/jeremycook123/skynet.git'
+        def REPO_URL = 'https://github.com/jeremycook123/skynet.git'
+        git url: REPO_URL
+        //git branch: 'webapp2', url: REPO_URL
     }
 
     stage('build') {
