@@ -24,7 +24,7 @@ import java.util.Iterator;
 
 @WebServlet(name = "DockerServlet", urlPatterns = { "/app", "/action1", "/action2", "/action3" }, loadOnStartup = 1)
 public class DockerServlet extends HttpServlet {
-    final static String CONTAINER_NETWORK_NAME = "tmp_testnet1";
+    final static String CONTAINER_NETWORK_NAME = "ec2-user_jenkins";
 
     // final static Log logger = LogFactory.getLog(DockerServlet.class);
 
